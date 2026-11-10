@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estructuras Algorítmicas en JS: Torre de Hanoi (Edición Servidores)</title>
+    <!-- Hoja de Estilos CSS3 Personalizada -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Iconos FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Fuentes Web Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- ENCABEZADO Y NAVEGACIÓN DOCENTE -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="brand">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-server"></i>
+                </div>
+                <div>
+                    <h1>Algoritmos en JS: Torre de Hanoi (Servidores)</h1>
+                    <p>Recurso Didáctico para la Práctica Docente y Aprendizaje de Estructuras Algorítmicas</p>
+                </div>
+            </div>
+
+            <!-- Botones de Estructuras Algorítmicas -->
+            <nav class="nav-buttons">
+                <button onclick="setTab('secuencial')" id="btn-secuencial" class="tab-btn active">
+                    <i class="fa-solid fa-arrow-down-long icon-blue"></i> Secuencial
+                </button>
+                <button onclick="setTab('condicional')" id="btn-condicional" class="tab-btn">
+                    <i class="fa-solid fa-code-branch icon-yellow"></i> Condicional
+                </button>
+                <button onclick="setTab('iterativa')" id="btn-iterativa" class="tab-btn">
+                    <i class="fa-solid fa-rotate icon-emerald"></i> Iterativa
+                </button>
+                <button onclick="setTab('recursiva')" id="btn-recursiva" class="tab-btn">
+                    <i class="fa-solid fa-network-wired icon-purple"></i> Recursiva
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main-layout">
+
+        <!-- SECCIÓN IZQUIERDA: SIMULADOR DE SERVIDORES (HANOI) -->
+        <section class="panel">
+            <div class="panel-header">
+                <div>
+                    <h2><i class="fa-solid fa-microchip icon-blue"></i> Simulación DataCenter (Migración)</h2>
+                    <p>Mueve los servidores del Rack A al Rack C respetando las capacidades.</p>
+                </div>
+
+                <div class="controls font-inter">
+                    <label>Servidores:</label>
+                    <select id="serverCount" onchange="resetGame()">
+                        <option value="3" selected>3 Servidores</option>
+                        <option value="4">4 Servidores</option>
+                        <option value="5">5 Servidores</option>
+                    </select>
+                    <button id="resetBtn" onclick="resetGame()" class="btn btn-secondary">
+                        <i class="fa-solid fa-rotate-left"></i> Reiniciar
+                    </button>
+                    <button id="solveBtn" onclick="runAutoSolve()" class="btn btn-primary">
+                        <i class="fa-solid fa-play"></i> Auto-Resolver (Recursivo)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Marcadores -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <span class="metric-label">Movimientos</span>
+                    <span id="moveCount" class="metric-value icon-blue">0</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-label">Óptimo (2ⁿ - 1)</span>
+                    <span id="minMoves" class="metric-value icon-emerald">7</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-label">Estado</span>
+                    <span id="statusMessage" class="status-text">Listo</span>
+                </div>
+            </div>
+
+            <!-- RACKS Y TORRES -->
+            <div class="racks-container">
+                <!-- RACK A -->
+                <div onclick="handleTowerClick(0)" class="tower-container">
+                    <div class="tower-title">RACK A (Origen)</div>
+                    <div class="tower-pole"></div>
+                    <div id="rack-0" class="rack-stack"></div>
+                    <div class="rack-base"></div>
+                </div>
+
+                <!-- RACK B -->
+                <div onclick="handleTowerClick(1)" class="tower-container">
+                    <div class="tower-title">RACK B (Puente)</div>
+                    <div class="tower-pole"></div>
+                    <div id="rack-1" class="rack-stack"></div>
+                    <div class="rack-base"></div>
+                </div>
+
+                <!-- RACK C -->
+                <div onclick="handleTowerClick(2)" class="tower-container">
+                    <div class="tower-title">RACK C (Destino)</div>
+                    <div class="tower-pole"></div>
+                    <div id="rack-2" class="rack-stack"></div>
+                    <div class="rack-base"></div>
+                </div>
+            </div>
+
+            <!-- Leyenda explicativa -->
+            <div class="legend border-top">
+                <div class="legend-item">
+                    <span class="dot dot-emerald"></span>
+                    <span><strong>Servidor 1U (Ligero)</strong></span>
+                </div>
+                <div class="legend-item">
+                    <span class="dot dot-purple"></span>
+                    <span><strong>Servidor Mainframe 5U (Pesado)</strong></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN DERECHA: EXPLICACIÓN DE CÓDIGO Y CONCEPTOS APRENDER -->
+        <section class="panel flex-column">
+            <div class="concept-header">
+                <span id="concept-badge" class="badge">ESTRUCTURA SECUENCIAL</span>
+                <span class="js-tag"><i class="fa-brands fa-js icon-yellow"></i> JavaScript Core</span>
+            </div>
+
+            <h3 id="concept-title">Procesamiento Secuencial</h3>
+            <p id="concept-desc">Las instrucciones se ejecutan una tras otra en un orden estricto de arriba a abajo.</p>
+
+            <!-- Visor de Código JavaScript -->
+            <div class="code-editor flex-grow">
+                <div class="editor-header">
+                    <span><i class="fa-solid fa-code icon-blue"></i> algoritmo_ejemplo.js</span>
+                    <button onclick="copyCode()" class="copy-btn"><i class="fa-regular fa-copy"></i> Copiar Código</button>
+                </div>
+                <pre id="code-display" class="code-font">// Cargando código de la estructura...</pre>
+            </div>
+
+            <!-- Nota Pedagógica Docente -->
+            <div class="pedagogy-box">
+                <i class="fa-solid fa-graduation-cap icon-blue"></i>
+                <div>
+                    <strong>Explicación Docente:</strong>
+                    <span id="pedagogical-note">Nota pedagógica de la estructura actual.</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Enlace al Archivo JavaScript Externo -->
+    <script src="script.js"></script>
+</body>
+</html>
